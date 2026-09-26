@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
     if (send(sock, request, strlen(request), 0) == -1) 
     {
         perror("Send failed");
-        closesocket(sock);
+        close(sock);
         exit(EXIT_FAILURE);
     }
 
@@ -269,13 +269,13 @@ int main(int argc, char** argv) {
         //printf("Server failure: %d\n", statusCodeInt);
         fprintf(stderr, "Server failure: %d\n", statusCodeInt);
         ArrayListBuf_free(&buffedList);
-        closesocket(sock);
+        close(sock);
         exit(4);
     }
 
     //Always close/free your memory before you head out.
     ArrayListBuf_free(&buffedList);
-    closesocket(sock);
+    close(sock);
     return 0;
 }
 
@@ -317,7 +317,7 @@ int findSocket(struct myargs args)
         if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) 
         {
             perror("connect failed");
-            closesocket(sockfd);
+            close(sockfd);
             continue;
         }
         //Success

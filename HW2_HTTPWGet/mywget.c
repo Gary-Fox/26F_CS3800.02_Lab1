@@ -3,14 +3,12 @@
 #include <stdlib.h>
 #include <errno.h>
 
-/*
 #include<sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-*/
 
-#include <WinSock2.h>
-#include <ws2tcpip.h>
+//#include <WinSock2.h>
+//#include <ws2tcpip.h>
 #include <unistd.h>
 
 #include <stdint.h>
@@ -167,12 +165,14 @@ int main(int argc, char** argv) {
     struct myargs args = parseArgs(argc, argv);
     
     //My fault for choosing windows.
+    /*
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) 
     {
         fprintf(stderr, "WSAStartup failed\n");
         exit(1);
     }
+    */
     
     //finding a working socket
     int sock = findSocket(args);
@@ -206,7 +206,7 @@ int main(int argc, char** argv) {
     if (send(sock, request, strlen(request), 0) == -1) 
     {
         perror("Send failed");
-        closesocket(sock);
+        close(sock);
         exit(EXIT_FAILURE);
     }
 
@@ -268,13 +268,13 @@ int main(int argc, char** argv) {
         //printf("Server failure: %d\n", statusCodeInt);
         fprintf(stderr, "Server failure: %d\n", statusCodeInt);
         ArrayListBuf_free(&buffedList);
-        closesocket(sock);
+        close(sock);
         exit(4);
     }
 
     //Always close/free your memory before you head out.
     ArrayListBuf_free(&buffedList);
-    closesocket(sock);
+    close(sock);
     return 0;
 }
 
@@ -316,7 +316,7 @@ int findSocket(struct myargs args)
         if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) 
         {
             perror("connect failed");
-            closesocket(sockfd);
+            close(sockfd);
             continue;
         }
         //Success

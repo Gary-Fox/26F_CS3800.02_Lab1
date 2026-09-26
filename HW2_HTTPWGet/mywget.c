@@ -3,14 +3,13 @@
 #include <stdlib.h>
 #include <errno.h>
 
-/*
+
 #include<sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-*/
 
-#include <WinSock2.h>
-#include <ws2tcpip.h>
+//#include <WinSock2.h>
+//#include <ws2tcpip.h>
 #include <unistd.h>
 
 #include <stdint.h>
@@ -167,12 +166,14 @@ int main(int argc, char** argv) {
     struct myargs args = parseArgs(argc, argv);
     
     //My fault for choosing windows.
+    /*
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) 
     {
         fprintf(stderr, "WSAStartup failed\n");
         exit(1);
     }
+    */
     
     //finding a working socket
     int sock = findSocket(args);
